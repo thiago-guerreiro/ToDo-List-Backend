@@ -29,5 +29,28 @@ public class TodoService {
 		List<Todo> list = repository.findAllClose();
 		return list;
 	}
+	
+	public List<Todo> findAll() {
+		List<Todo> list = repository.findAll();
+		return list;
+	}
+	
+	public Todo create(Todo obj) {
+		obj.setId(null);
+		return repository.save(obj);
+	}
 
+	public void delete(Long id) {
+		repository.deleteById(id);
+	}
+
+	public Todo update(Long id, Todo obj) {
+		Todo newObj = findById(id);
+		newObj.setTitulo(obj.getTitulo());
+		newObj.setDataParaFinalizar(obj.getDataParaFinalizar());
+		newObj.setDescricao(obj.getDescricao());
+		newObj.setFinalizado(obj.isFinalizado());
+		return repository.save(newObj);
+	}
+	
 }
