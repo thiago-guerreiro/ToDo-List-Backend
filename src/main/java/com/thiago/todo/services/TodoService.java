@@ -8,33 +8,34 @@ import org.springframework.stereotype.Service;
 
 import com.thiago.todo.domain.Todo;
 import com.thiago.todo.repositories.TodoRepository;
+import com.thiago.todo.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class TodoService {
-	
+
 	@Autowired
 	private TodoRepository repository;
-	
+
 	public Todo findById(Long id) {
 		Optional<Todo> obj = repository.findById(id);
-		return obj.orElse(null);
+		return obj.orElseThrow(() -> new ObjectNotFoundException("Tarefa não econtrada. Id: " + id));
 	}
-	
+
 	public List<Todo> findAllOpen() {
 		List<Todo> list = repository.findAllOpen();
 		return list;
 	}
-	
+
 	public List<Todo> findAllClose() {
 		List<Todo> list = repository.findAllClose();
 		return list;
 	}
-	
+
 	public List<Todo> findAll() {
 		List<Todo> list = repository.findAll();
 		return list;
 	}
-	
+
 	public Todo create(Todo obj) {
 		obj.setId(null);
 		return repository.save(obj);
@@ -52,5 +53,5 @@ public class TodoService {
 		newObj.setFinalizado(obj.isFinalizado());
 		return repository.save(newObj);
 	}
-	
+
 }
